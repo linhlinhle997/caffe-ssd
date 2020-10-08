@@ -30,8 +30,9 @@ $ sudo apt-get install the python3-dev
 ```
 2. Change `Makefile.config`
 ``` Shell$ 
-  $ cd ./caffe
+  $ cd ./caffe-ssd
   $ cp Makefile.config.example Makefile.config
+  $ nano Makefile.config
 ```
 - Change `Makefile.config` for Cuda-10.2
 ``` Shell
@@ -65,22 +66,27 @@ $ sudo apt-get install the python3-dev
              -gencode arch=compute_75,code=sm_75 \
              -gencode arch=compute_75,code=compute_75
 
-  66. PYTHON_INCLUDE := /usr/include/python2.7 \
+  50. #BLAS := atlas
+      BLAS := open
+  => BLAS := atlas
+    #BLAS := open
+
+  69. PYTHON_INCLUDE := /usr/include/python2.7 \
 		/usr/lib/python2.7/dist-packages/numpy/core/include
   => #PYTHON_INCLUDE := /usr/include/python2.7 \
 	#/usr/lib/python2.7/dist-packages/numpy/core/include
   
-  76. # PYTHON_LIBRARIES := boost_python3 python3.5m
+  79. # PYTHON_LIBRARIES := boost_python3 python3.5m
     # PYTHON_INCLUDE := /usr/include/python3.5m \
     #/usr/lib/python3.5/dist-packages/numpy/core/include
   => PYTHON_LIBRARIES := boost_python3 python3.6m
     PYTHON_INCLUDE := /usr/include/python3.6m \ 
     /usr/lib/python3.6/dist-packages/numpy/core/include
 
-  92. INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include
+  95. INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include
       LIBRARY_DIRS := $(PYTHON_LIB) /usr/local/lib /usr/lib
   => INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include /usr/include/hdf5/serial
-      LIBRARY_DIRS := $(PYTHON_LIB) /usr/local/lib /usr/lib /usr/lib/x86_64-linux
+      LIBRARY_DIRS := $(PYTHON_LIB) /usr/local/lib /usr/lib /usr/lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/hdf5/serial
 ```
 3. Install Python Caffe dependencies
 ``` Shell
@@ -88,7 +94,7 @@ $ cd ./python
 $ for req in $(cat requirements.txt); do pip3 install $req; done
 $ cd ..
 ```
-- Add the module directory to `~/.zshrc` with `export PYTHONPATH=/home/alienware/caffe-ssd/python:$PYTHONPATH`, run command `source ~/.zshrc`
+- Add the module directory to `~/.zshrc` with `export PYTHONPATH=~/caffe-ssd/python:$PYTHONPATH`, run command `source ~/.zshrc`
 4. Build the code.
 ``` Shell
     $ make -j8
@@ -148,10 +154,10 @@ $ cd ..
         ├── test_name_size.txt
         └── trainval.txt
 ```
-6. Downloads VGG16 pre-train model from [VGG16](https://gist.github.com/weiliu89/2ed6e13bfd5b57cf81d6) and place in folder `/home/alienware/caffe-ssd/models/VGGNet/`
+6. Downloads VGG16 pre-train model from [VGG16](https://gist.github.com/weiliu89/2ed6e13bfd5b57cf81d6) and place in folder `~/caffe-ssd/models/VGGNet/`
 7. Training model
 ``` Shell
-    $ cd  /home/caffe-ssd
+    $ cd  ~/caffe-ssd
     $ python3 ./examples/ssd/ssd_pascal_kitti.py
 ```
 8. Testing model

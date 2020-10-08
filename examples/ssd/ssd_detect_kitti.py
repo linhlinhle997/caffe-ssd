@@ -36,7 +36,7 @@ def get_labelname(labelmap, labels):
         labels = [labels]
     for label in labels:
         found = False
-        for i in xrange(0, num_labels):
+        for i in range(0, num_labels):
             if label == labelmap.item[i].label:
                 found = True
                 labelnames.append(labelmap.item[i].display_name)
@@ -102,7 +102,7 @@ colors = plt.cm.hsv(np.linspace(0, 1, 21)).tolist()
 plt.imshow(image)
 currentAxis = plt.gca()
  
-for i in xrange(top_conf.shape[0]):
+for i in range(top_conf.shape[0]):
     xmin = int(round(top_xmin[i] * image.shape[1]))
     ymin = int(round(top_ymin[i] * image.shape[0]))
     xmax = int(round(top_xmax[i] * image.shape[1]))
